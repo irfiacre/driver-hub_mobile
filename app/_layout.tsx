@@ -63,6 +63,9 @@ export default function RootLayout() {
     return null;
   }
   const user = null;
+  const handleUserHasSignedIn = (userObj: any) =>
+    console.log("user has logged in", userObj);
+
   return (
     <ThemeProvider value={DefaultTheme}>
       <SafeAreaProvider>
@@ -73,7 +76,7 @@ export default function RootLayout() {
           </Stack>
         ) : (
           <SafeAreaView style={styles.container}>
-            <Home />
+            <Home onSignin={handleUserHasSignedIn} />
           </SafeAreaView>
         )}
       </SafeAreaProvider>

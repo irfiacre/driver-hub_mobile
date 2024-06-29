@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import {
   StyledButton,
@@ -7,7 +7,11 @@ import {
   StyledView,
 } from "@/components/StyledComponents";
 
-const GetStarted = () => {
+const GetStarted = ({
+  onBtnPress,
+}: {
+  onBtnPress: (text: "login" | "signup") => void;
+}) => {
   return (
     <StyledView>
       <StyledView className="pt-20 pb-36 items-end">
@@ -30,13 +34,19 @@ const GetStarted = () => {
         </StyledView>
       </StyledView>
       <StyledView className="pt-16 flex flex-row justify-between gap-2 items-start">
-        <StyledButton className="px-10 py-3 bg-primary rounded-xl text-center">
+        <StyledButton
+          className="px-10 py-3 bg-primary rounded-xl text-center"
+          onPress={() => onBtnPress("signup")}
+        >
           <StyledText className="text-white text-base font-medium text-center">
             Sign up
           </StyledText>
         </StyledButton>
         <StyledButton className="px-10 py-3 border border-primary rounded-xl text-base text-center">
-          <StyledText className="text-primary text-base font-medium text-center">
+          <StyledText
+            className="text-primary text-base font-medium text-center"
+            onPress={() => onBtnPress("login")}
+          >
             Login
           </StyledText>
         </StyledButton>
