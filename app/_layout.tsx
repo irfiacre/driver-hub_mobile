@@ -1,13 +1,8 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import {
   useFonts,
   Poppins_100Thin,
@@ -30,13 +25,13 @@ import {
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
 import Home from "./Home";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     Poppins_100Thin,
     Poppins_100Thin_Italic,
@@ -69,17 +64,19 @@ export default function RootLayout() {
   }
   const user = null;
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {user ? (
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      ) : (
-        <SafeAreaView style={styles.container}>
-          <Home />
-        </SafeAreaView>
-      )}
+    <ThemeProvider value={DefaultTheme}>
+      <SafeAreaProvider>
+        {user ? (
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        ) : (
+          <SafeAreaView style={styles.container}>
+            <Home />
+          </SafeAreaView>
+        )}
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }
