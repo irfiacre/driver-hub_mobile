@@ -8,6 +8,7 @@ import {
 import LogoComponent from "@/components/logo/LogoComponent";
 import BaseInput from "@/components/BaseInput";
 import DismissKeyboard from "@/components/DismissKeyboard";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 interface FormState {
   firstName: string;
@@ -31,6 +32,14 @@ const SignUp = () => {
       ...prevState,
       [identifier]: value,
     }));
+
+  const handleCheckBox = (isChecked: boolean) =>
+    console.log("===========>", isChecked);
+
+  const handleCreateAccount = () => {
+    console.log(state);
+  };
+
   return (
     <StyledView className="p-8 bg-authBackground h-full">
       <StatusBar backgroundColor="#F0F0F2" />
@@ -71,11 +80,23 @@ const SignUp = () => {
             />
           </StyledView>
         </DismissKeyboard>
+
+        <StyledView className="py-2.5">
+          <BouncyCheckbox
+            size={20}
+            fillColor="#B8B8D2"
+            unFillColor={"transparent"}
+            text="By creating an account you have to agree with our them & condition."
+            // iconStyle={{ borderColor: "red" }}
+            textStyle={{ fontFamily: "Poppins_400Regular", fontSize: 14 }}
+            onPress={handleCheckBox}
+          />
+        </StyledView>
       </StyledView>
       <StyledView className="w-full flex flex-row justify-between gap-2 items-start py-3.5">
         <StyledButton
           className=" w-full px-10 py-4 bg-primary rounded-xl text-center"
-          // onPress={() => onBtnPress("signup")}
+          onPress={handleCreateAccount}
         >
           <StyledText className="text-white text-lg font-medium text-center">
             Create account
