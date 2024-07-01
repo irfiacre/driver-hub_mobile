@@ -76,10 +76,12 @@ export default function RootLayout() {
     <ThemeProvider value={DefaultTheme}>
       <SafeAreaProvider>
         {user ? (
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+          <SafeAreaView style={styles.container}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </SafeAreaView>
         ) : (
           <SafeAreaView style={styles.container}>
             <Home onSignin={handleUserHasSignedIn} />
