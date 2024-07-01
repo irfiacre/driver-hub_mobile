@@ -1,20 +1,34 @@
-import { Image, StyleSheet, Platform } from "react-native";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { StyledText } from "@/components/StyledComponents";
+import { StyleSheet } from "react-native";
+import {
+  StyledButton,
+  StyledText,
+  StyledView,
+} from "@/components/StyledComponents";
+import TopComponent from "@/components/TopComponent";
+import LogoComponent from "@/components/logo/LogoComponent";
+import { useRouter } from "expo-router";
 
-export default function HomeScreen() {
+export default function Home() {
+  const router = useRouter();
+
+  const handleSubmitApplication = () => router.navigate("/application");
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <StyledText>XXX</StyledText>
-    </ParallaxScrollView>
+    <StyledView className="h-full">
+      <TopComponent />
+      <StyledView className="justify-center align-middle items-center">
+        <LogoComponent medium />
+      </StyledView>
+      <StyledView className="px-10 w-full flex flex-row justify-between gap-2 items-start py-3.5">
+        <StyledButton
+          className="w-full px-10 py-4 bg-primary rounded-xl text-center"
+          onPress={handleSubmitApplication}
+        >
+          <StyledText className="text-white text-lg font-poppinsMedium text-center">
+            Submit Application
+          </StyledText>
+        </StyledButton>
+      </StyledView>
+    </StyledView>
   );
 }
 

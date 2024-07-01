@@ -4,14 +4,20 @@ import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import {
+  MaterialCommunityIcons,
+  FontAwesome6,
+  AntDesign,
+  Ionicons,
+  FontAwesome,
+} from "@expo/vector-icons";
+import { PRIMARY_COLOR } from "@/constants/fixtures";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: PRIMARY_COLOR,
         headerShown: false,
       }}
     >
@@ -20,23 +26,24 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
+            <MaterialCommunityIcons
+              name="home-variant"
+              size={25}
               color={color}
             />
           ),
         }}
       />
       <Tabs.Screen
-        name="training"
+        name={false ? "training" : "application/index"}
         options={{
-          title: "Training",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
+          title: false ? "Training" : "Application",
+          tabBarIcon: ({ color }) =>
+            false ? (
+              <FontAwesome6 size={24} name="book" color={color} />
+            ) : (
+              <FontAwesome name="send" size={24} color={color} />
+            ),
         }}
       />
       <Tabs.Screen
@@ -44,10 +51,11 @@ export default function TabLayout() {
         options={{
           title: "Search",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
+            // <TabBarIcon
+            //   name={focused ? "home" : "home-outline"}
+            //   color={color}
+            // />
+            <AntDesign name="search1" size={24} color={color} />
           ),
         }}
       />
@@ -56,10 +64,11 @@ export default function TabLayout() {
         options={{
           title: "Message",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
+            // <TabBarIcon
+            //   name={focused ? "code-slash" : "code-slash-outline"}
+            //   color={color}
+            // />
+            <AntDesign name="message1" size={24} color={color} />
           ),
         }}
       />
@@ -68,10 +77,11 @@ export default function TabLayout() {
         options={{
           title: "Account",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
+            // <TabBarIcon
+            //   name={focused ? "code-slash" : "code-slash-outline"}
+            //   color={color}
+            // />
+            <MaterialCommunityIcons name="account" size={24} color={color} />
           ),
         }}
       />
