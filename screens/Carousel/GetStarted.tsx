@@ -15,7 +15,7 @@ const GetStarted = ({
   return (
     <StyledView>
       <StyledView className="pt-20 pb-36 items-end">
-        <StyledText className="text-base text-center text-textLightColor">
+        <StyledText className="text-base text-center text-textLightColor font-poppinsRegular">
           Skip
         </StyledText>
       </StyledView>
@@ -24,7 +24,7 @@ const GetStarted = ({
         className="w-60 h-60"
       />
       <StyledView className="pt-16">
-        <StyledText className="text-2xl font-bold text-center pb-16">
+        <StyledText className="text-2xl font-poppinsBold text-center pb-16">
           Get Started Now!
         </StyledText>
         <StyledView className="flex flex-row justify-center gap-2 items-start">
@@ -38,13 +38,13 @@ const GetStarted = ({
           className="px-10 py-3 bg-primary rounded-xl text-center"
           onPress={() => onBtnPress("signup")}
         >
-          <StyledText className="text-white text-base font-medium text-center">
+          <StyledText className="text-white text-base font-poppinsMedium text-center">
             Sign up
           </StyledText>
         </StyledButton>
         <StyledButton className="px-10 py-3 border border-primary rounded-xl text-base text-center">
           <StyledText
-            className="text-primary text-base font-medium text-center"
+            className="text-primary text-base font-poppinsMedium text-center"
             onPress={() => onBtnPress("login")}
           >
             Login

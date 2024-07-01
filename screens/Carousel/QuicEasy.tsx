@@ -10,7 +10,7 @@ const QuicEasy = () => {
   return (
     <StyledView>
       <StyledView className="pt-20 pb-36 items-end">
-        <StyledText className="text-base text-center text-textLightColor">
+        <StyledText className="text-base text-center text-textLightColor font-poppinsRegular">
           Skip
         </StyledText>
       </StyledView>
@@ -19,10 +19,10 @@ const QuicEasy = () => {
         className="w-60 h-60"
       />
       <StyledView className="pt-16">
-        <StyledText className="text-2xl font-bold text-center pb-10">
+        <StyledText className="text-2xl text-center pb-10 font-poppinsBold">
           Quick and easy!
         </StyledText>
-        <StyledText className="text-base text-center font-normal text-textLightColor">
+        <StyledText className="text-base text-center font-poppinsRegular text-textLightColor">
           Quick to Register and Easy to use
         </StyledText>
       </StyledView>

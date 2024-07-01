@@ -8,3 +8,18 @@ export const emailValidate = (email: string) => {
     return "Invalid Email!";
   }
 };
+
+export const DRIVER_ID = `0724-${Math.round(Math.random() * 100)}`;
+
+export const hasEmptyFields = (obj: any): boolean => {
+  return Object.keys(obj).some((key) => {
+    const value = obj[key];
+    return (
+      value === "" ||
+      value === null ||
+      value === undefined ||
+      (Array.isArray(value) && value.length === 0) ||
+      (typeof value === "object" && Object.keys(value).length === 0)
+    );
+  });
+};

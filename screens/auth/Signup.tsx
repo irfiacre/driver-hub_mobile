@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View } from "react-native";
+import { Alert, StatusBar, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import {
   StyledButton,
@@ -9,6 +9,11 @@ import LogoComponent from "@/components/logo/LogoComponent";
 import BaseInput from "@/components/BaseInput";
 import DismissKeyboard from "@/components/DismissKeyboard";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { DRIVER_ID, emailValidate, hasEmptyFields } from "@/utils/helpers";
+import { addUser } from "@/services/firebase/authentication";
+import { DRIVERS_COLLECTION_NAME } from "@/constants/collectionNames";
+import { createDocEntry } from "@/services/firebase/helpers";
+import Spinner from "react-native-loading-spinner-overlay";
 
 interface FormState {
   firstName: string;
@@ -18,39 +23,85 @@ interface FormState {
   error?: string | null;
 }
 
-const SignUp = () => {
+const SignUp = ({ handleGoToLogin }: { handleGoToLogin: () => void }) => {
   const [state, setState] = useState<FormState>({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    error: null,
   });
-
-  const handleInputChange = (identifier: string, value: string) =>
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const handleInputChange = (identifier: string, value: string) => {
     setState((prevState: any) => ({
       ...prevState,
       [identifier]: value,
     }));
-
+    setError(null);
+  };
   const handleCheckBox = (isChecked: boolean) =>
     console.log("===========>", isChecked);
 
-  const handleCreateAccount = () => {
-    console.log(state);
+  const handleCreateAccount = async () => {
+    setLoading(true);
+    if (hasEmptyFields(state)) {
+      setError("All fields are required");
+      setLoading(false);
+      return;
+    }
+    const emailValidation = emailValidate(state.email);
+    if (emailValidation !== state.email) {
+      setError(emailValidation);
+      setLoading(false);
+      return;
+    }
+    const userEntry = await addUser(state.email, state.password);
+
+    if (userEntry.uid) {
+      const driverFormat = {
+        id: DRIVER_ID,
+        userId: userEntry.uid,
+        firstName: state.firstName,
+        lastName: state.lastName,
+        nationalId: null,
+        driverLicenseId: null,
+        createdAt: new Date(),
+      };
+
+      const driverAdded = await createDocEntry(
+        DRIVERS_COLLECTION_NAME,
+        driverFormat
+      );
+      if (driverAdded) {
+        setLoading(false);
+        Alert.alert("Success", "Account created successfully");
+        handleGoToLogin();
+      } else {
+        setState((prevState: any) => ({
+          ...prevState,
+          error: "Something went wrong, please try again",
+        }));
+      }
+    } else {
+      if (userEntry.code.includes("email-already-in-use")) {
+        Alert.alert("warning", "Email Already in use");
+      }
+    }
+    setLoading(false);
   };
 
   return (
     <StyledView className="p-8 bg-authBackground h-full">
+      <Spinner visible={loading} />
       <StatusBar backgroundColor="#F0F0F2" />
       <StyledView className="items-center">
         <LogoComponent medium />
       </StyledView>
       <StyledView>
-        <StyledText className="text-2xl font-bold text-left">
+        <StyledText className="text-2xl font-poppinsBold text-left">
           Sign Up
         </StyledText>
-        <StyledText className="text-sm font-normal text-borderColorLight py-2.5">
+        <StyledText className="text-sm font-poppinsRegular text-borderColorLight py-2.5">
           Enter your details below & free sign up
         </StyledText>
         <DismissKeyboard>
@@ -80,7 +131,11 @@ const SignUp = () => {
             />
           </StyledView>
         </DismissKeyboard>
-
+        {error && (
+          <StyledText className="p-2 text-red-500 text-center text-base font-poppinsRegular">
+            {error}
+          </StyledText>
+        )}
         <StyledView className="py-2.5">
           <BouncyCheckbox
             size={20}
@@ -98,7 +153,7 @@ const SignUp = () => {
           className=" w-full px-10 py-4 bg-primary rounded-xl text-center"
           onPress={handleCreateAccount}
         >
-          <StyledText className="text-white text-lg font-medium text-center">
+          <StyledText className="text-white text-lg font-poppinsMedium text-center">
             Create account
           </StyledText>
         </StyledButton>

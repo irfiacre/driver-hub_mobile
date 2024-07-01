@@ -1,35 +1,14 @@
-import { app } from "@/util/firebase";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  updateProfile,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  setDoc,
-  query,
-  updateDoc,
-  arrayUnion,
-  getDoc,
-  deleteDoc,
-  where,
-  getFirestore,
-} from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { findDocEntryByField } from "./helpers";
-
-interface UserObject {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  createdAt: Date;
-  role: string;
-}
+import { app } from "@/utils/firebase";
+import { DRIVERS_COLLECTION_NAME } from "@/constants/collectionNames";
+import { AddUserToDB } from "../database/helpers";
 
 const auth: any = getAuth(app);
 export const database = getFirestore(app);
@@ -43,7 +22,7 @@ export const signExistingUser = async (email: string, password: string) => {
     );
     const user = userCredential.user;
     const staffUser: any = await findDocEntryByField(
-      "staff",
+      DRIVERS_COLLECTION_NAME,
       "userId",
       user.uid
     );
@@ -52,10 +31,9 @@ export const signExistingUser = async (email: string, password: string) => {
       firstName: staffUser.firstName,
       lastName: staffUser.lastName,
       createdAt: user.metadata.creationTime,
-      photoUrl: user.photoURL,
-      role: staffUser.role,
+      photoUrl: user.photoURL ? user.photoURL : "",
     };
-
+    await AddUserToDB(formattedUser);
     return formattedUser;
   } catch (error: any) {
     return error;
@@ -70,11 +48,9 @@ export const addUser = async (email: string, password: string) => {
       password
     );
     const user = userCredential.user;
-
     return user;
   } catch (error: any) {
-    console.error(`Error getting Adding User: `, error);
-    throw error;
+    return error;
   }
 };
 

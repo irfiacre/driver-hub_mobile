@@ -1,7 +1,7 @@
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import {
   useFonts,
@@ -27,6 +27,7 @@ import {
 import Home from "./Home";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { findLocalUser } from "@/services/database/helpers";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -52,19 +53,24 @@ export default function RootLayout() {
     Poppins_900Black,
     Poppins_900Black_Italic,
   });
-
+  const [user, setUser] = useState(null);
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
+    (async () => {
+      await handleUserHasSignedIn();
+    })();
   }, [loaded]);
 
   if (!loaded) {
     return null;
   }
-  const user = null;
-  const handleUserHasSignedIn = (userObj: any) =>
-    console.log("user has logged in", userObj);
+
+  const handleUserHasSignedIn = async () => {
+    const localUser = await findLocalUser();
+    setUser(localUser);
+  };
 
   return (
     <ThemeProvider value={DefaultTheme}>
