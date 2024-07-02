@@ -24,7 +24,6 @@ export const uploadFile = async (
   onGotDownloadUrl: (url: string) => void,
   fileName?: string
 ) => {
-  let fileDownloadUrl = "";
   const REFERENCE_DIR = fileType.includes("image") ? "images" : "documents";
   const response = await fetch(uri);
   const imageBlob = await response.blob();

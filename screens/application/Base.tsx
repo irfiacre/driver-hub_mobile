@@ -56,12 +56,15 @@ const BaseScreen = ({
         ...state,
         passportPhotoUrl: image.url,
       });
+    } else {
+      setError("Please note that all fields & passport photo are required");
     }
   };
   const handleGotDownloadUrl = (url: string) =>
     setImage((prevState) => ({ ...prevState, url }));
 
   const handleUploadImg = async () => {
+    setError(null);
     if (!image.name) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -147,12 +150,17 @@ const BaseScreen = ({
         <Text> </Text>
         <BaseInput
           label="Driver License ID"
-          value={state.nationalId}
+          value={state.driverLicenseId}
           onChangeText={handleInputChange}
           identifier="driverLicenseId"
           placeholder="Enter number written on Driver License"
         />
       </StyledView>
+      {error && (
+        <StyledText className="p-2 text-red-500 text-center text-base font-poppinsRegular">
+          {error}
+        </StyledText>
+      )}
       <StyledView>
         <StyledButton
           className="w-full px-10 py-4 bg-primary rounded-xl text-center"
