@@ -7,18 +7,41 @@ import {
   StyledView,
 } from "@/components/StyledComponents";
 import BaseInput from "@/components/BaseInput";
-import { PLACEHOLDER_IMG } from "@/constants/fixtures";
+import { UPLOAD_PLACEHOLDER } from "@/constants/fixtures";
+import { Feather } from "@expo/vector-icons";
+import ProgressBar from "@/components/ProgressBar";
+import * as ImagePicker from "expo-image-picker";
+import { findLocalUser } from "@/services/database/helpers";
+import { uploadFile } from "@/services/firebase/storage";
+import { hasEmptyFields } from "@/utils/helpers";
 
 interface FormState {
   nationalId: string;
   driverLicenseId: string;
 }
+interface ImageObj {
+  id: string;
+  url: string;
+  name: string;
+  type: any;
+}
 
-const BaseScreen = () => {
+const BaseScreen = ({
+  onSubmitBaseInformation,
+}: {
+  onSubmitBaseInformation: (data: any) => void;
+}) => {
   const [state, setState] = useState<FormState>({
     nationalId: "",
     driverLicenseId: "",
   });
+  const [image, setImage] = useState<ImageObj>({
+    id: "",
+    url: "",
+    name: "",
+    type: "",
+  });
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const handleInputChange = (identifier: string, value: string) => {
     setState((prevState: any) => ({
@@ -28,21 +51,79 @@ const BaseScreen = () => {
     setError(null);
   };
   const handleSubmitBaseInfo = () => {
-    console.log(state);
+    if (!hasEmptyFields(state) && !hasEmptyFields(image)) {
+      onSubmitBaseInformation({
+        ...state,
+        passportPhotoUrl: image.url,
+      });
+    }
   };
-  const profileImg = PLACEHOLDER_IMG;
+  const handleGotDownloadUrl = (url: string) =>
+    setImage((prevState) => ({ ...prevState, url }));
+
+  const handleUploadImg = async () => {
+    if (!image.name) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [3, 4],
+        quality: 1,
+      });
+      if (!result.canceled) {
+        const { uri, type } = result.assets[0];
+        const user = await findLocalUser();
+        const IMAGE_NAME = `${user.firstName}_${
+          user.lastName
+        }-passportIMG-${new Date().getTime()}`;
+        setImage({
+          url: uri,
+          id: IMAGE_NAME,
+          name: IMAGE_NAME,
+          type: type,
+        });
+        await uploadFile(
+          uri,
+          type,
+          setProgress,
+          handleGotDownloadUrl,
+          IMAGE_NAME
+        );
+      }
+    }
+  };
+  const profileImg = image.url || UPLOAD_PLACEHOLDER;
 
   return (
-    <StyledView>
-      <StyledView className="flex flex-row items-center gap-10">
-        <StyledImage
-          source={{
-            uri: profileImg,
-            width: 152,
-            height: 142,
-          }}
-          className="rounded-lg"
-        />
+    <StyledView className="gap-10">
+      <StyledView className="flex flex-row items-center">
+        <StyledView>
+          <StyledView className="rounded-lg border border-borderColorLight">
+            <StyledImage
+              source={{
+                uri: profileImg,
+                width: 152,
+                height: 142,
+              }}
+              className="rounded-lg"
+            />
+          </StyledView>
+
+          <StyledButton
+            className={`p-2.5 rounded-full border w-14 items-center absolute -bottom-4 -right-4 ${
+              image.url.includes("http")
+                ? "bg-primary border-white"
+                : "bg-white border-borderColorLight text-textLightColor"
+            }  `}
+            onPress={handleUploadImg}
+          >
+            <Feather
+              name="upload-cloud"
+              size={20}
+              color={image.url.includes("http") ? "#fff" : "#858597"}
+            />
+          </StyledButton>
+        </StyledView>
+
         <StyledView className="px-8">
           <StyledText className="text-textLightColor text-base font-poppinsRegular">
             Upload Passport Photo
@@ -53,6 +134,9 @@ const BaseScreen = () => {
         </StyledView>
       </StyledView>
       <StyledView>
+        {progress > 0 && progress < 100 && <ProgressBar progress={progress} />}
+      </StyledView>
+      <StyledView>
         <BaseInput
           label="National ID"
           value={state.nationalId}
@@ -60,6 +144,7 @@ const BaseScreen = () => {
           identifier="nationalId"
           placeholder="Enter number written on national ID"
         />
+        <Text> </Text>
         <BaseInput
           label="Driver License ID"
           value={state.nationalId}
