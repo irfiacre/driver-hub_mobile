@@ -27,9 +27,10 @@ const Application = () => {
     const user = await findLocalUser();
     const applicationObj = {
       id: `application-${user.userId}`,
-      userId: user.userId,
-      applicantProfile: applicationInfo.baseInformation,
+      applicant: user,
+      baseInformation: applicationInfo.baseInformation,
       documents: data,
+      status: "pending",
     };
 
     const applicationSent = await createDocEntry(
