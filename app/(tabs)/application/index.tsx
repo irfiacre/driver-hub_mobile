@@ -31,6 +31,12 @@ const Application = () => {
       baseInformation: applicationInfo.baseInformation,
       documents: data,
       status: "pending",
+      onboardingPlan: {
+        courses: [],
+        progress: 0,
+        finishedCourses: 0,
+        totalCourses: 0,
+      },
     };
 
     const applicationSent = await createDocEntry(
