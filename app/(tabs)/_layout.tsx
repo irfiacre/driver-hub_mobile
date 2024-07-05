@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -12,8 +11,26 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 import { PRIMARY_COLOR } from "@/constants/fixtures";
+import { findDocEntryByField } from "@/services/firebase/helpers";
+import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
+import isAuth from "@/components/isAuth";
+import TopComponent from "@/components/TopComponent";
 
-export default function TabLayout() {
+const TabLayout = ({ user }: { user: any }) => {
+  const [application, setApplication] = useState<any>({});
+  useEffect(() => {
+    (async () => {
+      const applicationData = await findDocEntryByField(
+        APPLICATIONS_COLLECTION,
+        "applicant.userId",
+        user.userId
+      );
+      if (applicationData) {
+        setApplication(applicationData);
+      }
+    })();
+  }, []);
+
   return (
     <Tabs
       screenOptions={{
@@ -35,11 +52,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name={false ? "training" : "application/index"}
+        name={
+          application?.status === "approved" ? "training" : "application/index"
+        }
         options={{
-          title: false ? "Training" : "Application",
+          title:
+            application?.status === "approved" ? "Training" : "Application",
           tabBarIcon: ({ color }) =>
-            false ? (
+            application?.status === "approved" ? (
               <FontAwesome6 size={24} name="book" color={color} />
             ) : (
               <FontAwesome name="send" size={24} color={color} />
@@ -87,4 +107,6 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-}
+};
+
+export default isAuth(TabLayout);

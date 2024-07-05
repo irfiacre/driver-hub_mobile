@@ -26,7 +26,7 @@ export const findDocEntryByField = async (
       result.push(docData);
     });
   } catch (error: any) {
-    console.error(`Error getting document to ${collectionName}: `, error);
+    console.error(`>>> Error getting document to ${collectionName} >>>`, error);
     throw error;
   }
   return result[0];
