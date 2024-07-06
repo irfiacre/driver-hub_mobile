@@ -71,10 +71,6 @@ const TabLayout = ({ user }: { user: any }) => {
         options={{
           title: "Search",
           tabBarIcon: ({ color, focused }) => (
-            // <TabBarIcon
-            //   name={focused ? "home" : "home-outline"}
-            //   color={color}
-            // />
             <AntDesign name="search1" size={24} color={color} />
           ),
         }}
@@ -84,10 +80,6 @@ const TabLayout = ({ user }: { user: any }) => {
         options={{
           title: "Message",
           tabBarIcon: ({ color, focused }) => (
-            // <TabBarIcon
-            //   name={focused ? "code-slash" : "code-slash-outline"}
-            //   color={color}
-            // />
             <AntDesign name="message1" size={24} color={color} />
           ),
         }}

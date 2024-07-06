@@ -37,7 +37,7 @@ const UploadFile = ({
     onFileFinishedUpload({ ...fileMetaData });
   }, [fileMetaData.url]);
   const handleUploadDocument = async () => {
-    if (!fileMetaData.name || disabled) {
+    if (fileMetaData.name || disabled) {
       let result = await DocumentPicker.getDocumentAsync({
         type: ["application/pdf"],
       });
@@ -72,12 +72,18 @@ const UploadFile = ({
       </StyledText>
       <StyledButton
         onPress={handleUploadDocument}
-        className="w-full h-12 border border-borderColorLight bg-white rounded-lg px-2.5 font-poppinsRegular flex flex-row items-center justify-between"
+        className={`w-full h-12 border ${
+          fileMetaData.name ? "border-successGreen" : "border-borderColorLight"
+        }  bg-white rounded-lg px-2.5 font-poppinsRegular flex flex-row items-center justify-between`}
       >
         {progress > 0 && progress < 100 ? (
           <ProgressBar progress={progress} />
         ) : (
-          <StyledText className="text-base text-textLightColor font-poppinsRegular">
+          <StyledText
+            className={`text-base  ${
+              fileMetaData.name ? "text-successGreen" : "text-textLightColor"
+            }   font-poppinsRegular`}
+          >
             {fileMetaData.name
               ? `${fileMetaData.name.substring(0, 15)}... (${
                   fileMetaData.type
@@ -85,11 +91,21 @@ const UploadFile = ({
               : "Click to Select"}
           </StyledText>
         )}
-        <StyledView className="p-2.5 rounded-full items-center text-textLightColor">
+        <StyledView
+          className={`p-2.5 rounded-full items-center ${
+            fileMetaData.name ? "text-successGreen" : "text-textLightColor"
+          }`}
+        >
           <Feather
             name="upload-cloud"
             size={24}
-            color={progress > 0 && progress < 100 ? PRIMARY_COLOR : "#858597"}
+            color={
+              progress > 0 && progress < 100
+                ? PRIMARY_COLOR
+                : fileMetaData.name
+                ? "#00bf63"
+                : "#858597"
+            }
           />
         </StyledView>
       </StyledButton>

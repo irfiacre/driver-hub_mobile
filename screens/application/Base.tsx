@@ -98,7 +98,7 @@ const BaseScreen = ({
 
   return (
     <StyledView className="gap-10">
-      <StyledView className="flex flex-row items-center">
+      <StyledView className="flex flex-row items-start">
         <StyledView>
           <StyledView className="rounded-lg border border-borderColorLight">
             <StyledImage
@@ -112,26 +112,31 @@ const BaseScreen = ({
           </StyledView>
 
           <StyledButton
-            className={`p-2.5 rounded-full border w-14 items-center absolute -bottom-4 -right-4 ${
+            className={`p-2.5 rounded-full border w-fit items-center absolute -bottom-4 -right-4 ${
               image.url.includes("http")
-                ? "bg-primary border-white"
+                ? " bg-white border-white"
                 : "bg-white border-borderColorLight text-textLightColor"
             }  `}
             onPress={handleUploadImg}
+            disabled={image.url.includes("http")}
           >
-            <Feather
-              name="upload-cloud"
-              size={20}
-              color={image.url.includes("http") ? "#fff" : "#858597"}
-            />
+            {image.url.includes("http") ? (
+              <StyledText className="text-successGreen"> Uploaded </StyledText>
+            ) : (
+              <Feather
+                name="upload-cloud"
+                size={20}
+                color={image.url.includes("http") ? "#fff" : "#858597"}
+              />
+            )}
           </StyledButton>
         </StyledView>
 
-        <StyledView className="px-8">
-          <StyledText className="text-textLightColor text-base font-poppinsRegular">
+        <StyledView className="px-4">
+          <StyledText className="text-textLightColor text-sm font-poppinsRegular">
             Upload Passport Photo
           </StyledText>
-          <StyledText className="text-borderColorLight text-sm font-poppinsRegular py-4">
+          <StyledText className="text-borderColorLight text-xs font-poppinsRegular py-4">
             * Size 2MB, Clear, Colored
           </StyledText>
         </StyledView>

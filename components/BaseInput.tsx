@@ -30,6 +30,7 @@ const BaseInput = ({
       <StyledTextInput
         className="w-full h-12 border border-borderColorLight bg-white rounded-lg text-base px-2.5 text-textDarkColor font-poppinsRegular"
         placeholder={placeholder ? placeholder : `enter ${label.toLowerCase()}`}
+        placeholderTextColor="#b8b8d2"
         value={value}
         onChangeText={(value: string) => onChangeText(inputId, value)}
         secureTextEntry={secureEntry}
