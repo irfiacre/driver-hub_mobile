@@ -11,7 +11,6 @@ import { DRIVERS_COLLECTION_NAME } from "@/constants/collectionNames";
 import { AddUserToDB } from "../database/helpers";
 
 const auth: any = getAuth(app);
-export const database = getFirestore(app);
 
 export const signExistingUser = async (email: string, password: string) => {
   try {
@@ -56,16 +55,4 @@ export const addUser = async (email: string, password: string) => {
 
 export const signOutUser = async () => {
   await signOut(auth);
-};
-
-export const getAllStaff = async () => {
-  let result: any[] = [];
-  try {
-    const querySnapshot = await getDocs(collection(database, "staff"));
-    result = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  } catch (e) {}
-  return result;
 };

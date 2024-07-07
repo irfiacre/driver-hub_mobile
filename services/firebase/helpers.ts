@@ -2,11 +2,15 @@ import {
   collection,
   doc,
   getDocs,
+  getFirestore,
+  onSnapshot,
   query,
   setDoc,
   where,
 } from "firebase/firestore";
-import { database } from "./authentication";
+import { app } from "@/utils/firebase";
+
+export const database = getFirestore(app);
 
 export const findDocEntryByField = async (
   collectionName: string,
@@ -39,5 +43,19 @@ export const createDocEntry = async (collectionName: string, docObj: any) => {
     return true;
   } catch (e) {
     return false;
+  }
+};
+
+export const subscribeToDocument = (
+  collectionName: string,
+  onDataChange: (data: any) => void,
+  docId: string
+) => {
+  try {
+    onSnapshot(doc(database, collectionName, docId), (snapshot) => {
+      onDataChange(snapshot.data());
+    });
+  } catch (error: any) {
+    throw error;
   }
 };

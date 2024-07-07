@@ -11,13 +11,32 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 import { PRIMARY_COLOR } from "@/constants/fixtures";
-import { findDocEntryByField } from "@/services/firebase/helpers";
+import {
+  findDocEntryByField,
+  subscribeToDocument,
+} from "@/services/firebase/helpers";
 import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
 import isAuth from "@/components/isAuth";
+import { AddRecordToDB } from "@/services/database/helpers";
 
 const TabLayout = ({ user }: { user: any }) => {
   const [application, setApplication] = useState<any>({});
   const [showTraining, setShowTraining] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (application.applicant) {
+        await AddRecordToDB("application", application);
+      }
+    })();
+  }, [application]);
+
+  const handleOnUpdateData = (newChanges: any) => {
+    console.log("------------>", newChanges);
+
+    setApplication(newChanges);
+    setShowTraining(newChanges.status === "approved");
+  };
 
   useEffect(() => {
     (async () => {
@@ -31,6 +50,13 @@ const TabLayout = ({ user }: { user: any }) => {
         setShowTraining(applicationData.status === "approved");
       }
     })();
+
+    return () =>
+      subscribeToDocument(
+        APPLICATIONS_COLLECTION,
+        handleOnUpdateData,
+        application.id
+      );
   }, []);
 
   return (

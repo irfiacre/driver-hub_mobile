@@ -28,11 +28,13 @@ import Home from "./Home";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { findLocalUser } from "@/services/database/helpers";
+import { LogBox } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  LogBox.ignoreAllLogs();
   const [loaded] = useFonts({
     Poppins_100Thin,
     Poppins_100Thin_Italic,

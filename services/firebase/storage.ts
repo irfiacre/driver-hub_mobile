@@ -4,13 +4,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import {
-  addDoc,
-  doc,
-  getFirestore,
-  onSnapshot,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "@/utils/firebase";
 import { DOCUMENTS_COLLECTION } from "@/constants/collectionNames";
 
