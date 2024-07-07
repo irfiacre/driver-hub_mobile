@@ -17,7 +17,7 @@ interface FormState {
   password: string;
 }
 
-const Login = ({ onSignin }: { onSignin: () => void }) => {
+const Login = ({ onSignin }: { onSignin: (text?: string) => void }) => {
   const [state, setState] = useState<FormState>({
     email: "",
     password: "",
@@ -59,7 +59,6 @@ const Login = ({ onSignin }: { onSignin: () => void }) => {
   return (
     <StyledView className="p-8 bg-authBackground h-full">
       <Spinner visible={loading} />
-      <StatusBar backgroundColor="#F0F0F2" />
       <StyledView className="items-center">
         <LogoComponent medium />
       </StyledView>
@@ -106,6 +105,18 @@ const Login = ({ onSignin }: { onSignin: () => void }) => {
             Login
           </StyledText>
         </StyledButton>
+      </StyledView>
+
+      <StyledView>
+        <StyledText className="p-2 text-textLightColor text-center text-base font-poppinsRegular">
+          Don't have an account?{" "}
+          <StyledText
+            className="text-primary"
+            onPress={() => onSignin("signup")}
+          >
+            Sign up
+          </StyledText>
+        </StyledText>
       </StyledView>
     </StyledView>
   );

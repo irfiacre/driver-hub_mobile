@@ -93,7 +93,6 @@ const SignUp = ({ handleGoToLogin }: { handleGoToLogin: () => void }) => {
   return (
     <StyledView className="p-8 bg-authBackground h-full">
       <Spinner visible={loading} />
-      <StatusBar backgroundColor="#F0F0F2" />
       <StyledView className="items-center">
         <LogoComponent medium />
       </StyledView>

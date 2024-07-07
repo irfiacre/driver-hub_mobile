@@ -14,10 +14,11 @@ import { PRIMARY_COLOR } from "@/constants/fixtures";
 import { findDocEntryByField } from "@/services/firebase/helpers";
 import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
 import isAuth from "@/components/isAuth";
-import TopComponent from "@/components/TopComponent";
 
 const TabLayout = ({ user }: { user: any }) => {
   const [application, setApplication] = useState<any>({});
+  const [showTraining, setShowTraining] = useState(false);
+
   useEffect(() => {
     (async () => {
       const applicationData = await findDocEntryByField(
@@ -27,6 +28,7 @@ const TabLayout = ({ user }: { user: any }) => {
       );
       if (applicationData) {
         setApplication(applicationData);
+        setShowTraining(applicationData.status === "approved");
       }
     })();
   }, []);
@@ -51,21 +53,39 @@ const TabLayout = ({ user }: { user: any }) => {
           ),
         }}
       />
+
       <Tabs.Screen
-        name={
-          application?.status === "approved" ? "training" : "application/index"
+        name="training"
+        options={
+          showTraining
+            ? {
+                title: "Training",
+                tabBarIcon: ({ color }) => (
+                  <FontAwesome6 size={24} name="book" color={color} />
+                ),
+              }
+            : {
+                tabBarButton: (props) => null,
+              }
         }
-        options={{
-          title:
-            application?.status === "approved" ? "Training" : "Application",
-          tabBarIcon: ({ color }) =>
-            application?.status === "approved" ? (
-              <FontAwesome6 size={24} name="book" color={color} />
-            ) : (
-              <FontAwesome name="send" size={24} color={color} />
-            ),
-        }}
       />
+
+      <Tabs.Screen
+        name="application/index"
+        options={
+          !showTraining
+            ? {
+                title: "Application",
+                tabBarIcon: ({ color }) => (
+                  <FontAwesome name="send" size={24} color={color} />
+                ),
+              }
+            : {
+                tabBarButton: (props) => null,
+              }
+        }
+      />
+
       <Tabs.Screen
         name="search"
         options={{
