@@ -61,11 +61,13 @@ export const AddRecordToDB = async (tableName: string, record: any) => {
   try {
     const database: any = await openDatabase();
     const recordString = JSON.stringify(record);
+
     if (await findDBrecord(tableName)) {
       await database.runAsync(
         `UPDATE ${tableName} SET record =? WHERE id=1`,
         recordString
       );
+      return true;
     } else {
       await database.execAsync(`
         PRAGMA journal_mode = WAL;
@@ -75,9 +77,8 @@ export const AddRecordToDB = async (tableName: string, record: any) => {
         `INSERT INTO ${tableName} (record) VALUES (?)`,
         recordString
       );
+      return true;
     }
-
-    return true;
   } catch (error) {
     return false;
   }
@@ -87,7 +88,8 @@ export const findDBrecord = async (tableName: string) => {
   try {
     const database: any = await openDatabase();
     const firstRow = await database.getFirstAsync(`SELECT * FROM ${tableName}`);
-    return JSON.parse(firstRow);
+
+    return JSON.parse(firstRow.record);
   } catch (error) {
     return null;
   }

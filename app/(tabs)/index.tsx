@@ -1,52 +1,41 @@
 import { StyleSheet } from "react-native";
-import {
-  StyledButton,
-  StyledText,
-  StyledView,
-} from "@/components/StyledComponents";
-import TopComponent from "@/components/TopComponent";
-import LogoComponent from "@/components/logo/LogoComponent";
+import { StyledView } from "@/components/StyledComponents";
 import { useRouter } from "expo-router";
+import NoApplication from "@/screens/dashboard/NoApplication";
+import { useEffect, useState } from "react";
+import { findDBrecord } from "@/services/database/helpers";
+import { findDocEntryByField } from "@/services/firebase/helpers";
+import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
+import isAuth from "@/components/isAuth";
 
-export default function Home() {
+const Home = ({ user }: { user: any }) => {
   const router = useRouter();
+  const [application, setApplication] = useState<any>({});
+
+  useEffect(() => {
+    (async () => {
+      const record = await findDBrecord("application");
+      if (record.applicant) {
+        setApplication(record);
+      } else {
+        const applicationData = await findDocEntryByField(
+          APPLICATIONS_COLLECTION,
+          "applicant.userId",
+          user.userId
+        );
+        if (applicationData) setApplication(applicationData);
+      }
+    })();
+  }, []);
+
+  console.log(application);
 
   const handleSubmitApplication = () => router.navigate("/application");
   return (
     <StyledView className="h-full">
-      <TopComponent />
-      <StyledView className="justify-center align-middle items-center">
-        <LogoComponent medium />
-      </StyledView>
-      <StyledView className="px-10 w-full flex flex-row justify-between gap-2 items-start py-3.5">
-        <StyledButton
-          className="w-full px-10 py-4 bg-primary rounded-xl text-center"
-          onPress={handleSubmitApplication}
-        >
-          <StyledText className="text-white text-lg font-poppinsMedium text-center">
-            Submit Application
-          </StyledText>
-        </StyledButton>
-      </StyledView>
+      <NoApplication handleSubmitApplication={handleSubmitApplication} />
     </StyledView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});
+export default isAuth(Home);

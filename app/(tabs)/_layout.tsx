@@ -32,8 +32,6 @@ const TabLayout = ({ user }: { user: any }) => {
   }, [application]);
 
   const handleOnUpdateData = (newChanges: any) => {
-    console.log("------------>", newChanges);
-
     setApplication(newChanges);
     setShowTraining(newChanges.status === "approved");
   };
@@ -135,10 +133,6 @@ const TabLayout = ({ user }: { user: any }) => {
         options={{
           title: "Account",
           tabBarIcon: ({ color, focused }) => (
-            // <TabBarIcon
-            //   name={focused ? "code-slash" : "code-slash-outline"}
-            //   color={color}
-            // />
             <MaterialCommunityIcons name="account" size={24} color={color} />
           ),
         }}
@@ -147,4 +141,4 @@ const TabLayout = ({ user }: { user: any }) => {
   );
 };
 
-export default isAuth(TabLayout);
+export default TabLayout;
