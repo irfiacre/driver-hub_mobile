@@ -15,6 +15,7 @@ module.exports = {
         textLightColor: "#858597",
         backgroundColor: "#F7F8FC",
         backgroundColor2: "#DFE0EB",
+        backgroundColor3: "#F9CFE6",
         menuIconBackground: "#EAEAFF",
         borderColorLight: "#B8B8D2",
         sidebarBorderColor: "#E6E6E6",

@@ -25,7 +25,7 @@ const TopComponent = () => {
           <StyledText className="text-white text-5xl font-poppinsLight">
             Hello,
           </StyledText>
-          <StyledText className="text-white text-5xl font-poppinsBold h-fit py-4 ">
+          <StyledText className="text-white text-4xl font-poppinsBold h-fit py-4 ">
             {user?.lastName || "Unknown"}
           </StyledText>
         </StyledView>

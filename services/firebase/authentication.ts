@@ -20,18 +20,19 @@ export const signExistingUser = async (email: string, password: string) => {
       password
     );
     const user = userCredential.user;
-    const staffUser: any = await findDocEntryByField(
+    const driver: any = await findDocEntryByField(
       DRIVERS_COLLECTION_NAME,
       "userId",
       user.uid
     );
+
     const formattedUser = {
+      ...driver,
       userId: user.uid,
-      firstName: staffUser.firstName,
-      lastName: staffUser.lastName,
       createdAt: user.metadata.creationTime,
       photoUrl: user.photoURL ? user.photoURL : "",
     };
+
     await AddUserToDB(formattedUser);
     return formattedUser;
   } catch (error: any) {

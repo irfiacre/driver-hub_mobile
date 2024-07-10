@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { StatusBar, View } from "react-native";
 import CarouselComponent from "@/screens/Carousel";
 import Login from "@/screens/auth/Login";

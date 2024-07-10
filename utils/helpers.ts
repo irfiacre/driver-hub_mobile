@@ -1,3 +1,7 @@
+import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
+import { findDBrecord } from "@/services/database/helpers";
+import { findDocEntryByField } from "@/services/firebase/helpers";
+
 export const emailValidate = (email: string) => {
   if (!email) return "No Email Provided!";
   const re =
@@ -22,4 +26,20 @@ export const hasEmptyFields = (obj: any): boolean => {
       (typeof value === "object" && Object.keys(value).length === 0)
     );
   });
+};
+
+export const findApplication = async (userId: string) => {
+  const record = await findDBrecord("application");
+  if (record.applicant) {
+    return record;
+  } else {
+    const applicationData = await findDocEntryByField(
+      APPLICATIONS_COLLECTION,
+      "applicant.userId",
+      userId
+    );
+
+    if (applicationData) return applicationData;
+  }
+  return {};
 };

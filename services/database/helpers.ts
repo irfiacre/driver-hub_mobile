@@ -23,40 +23,6 @@ export const openDatabase = async () => {
   return db;
 };
 
-export const findLocalUser = async () => {
-  try {
-    const database: any = await openDatabase();
-    const firstRow = await database.getFirstAsync("SELECT * FROM user");
-    return firstRow;
-  } catch (error) {
-    return null;
-  }
-};
-
-export const AddUserToDB = async (userObj: User) => {
-  try {
-    const database: any = await openDatabase();
-    if (await findLocalUser()) {
-      return;
-    }
-    await database.execAsync(`
-PRAGMA journal_mode = WAL;
-CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY NOT NULL, userId TEXT NOT NULL, firstName TEXT NOT NULL, lastName TEXT NOT NULL, createdAt TEXT NOT NULL, photoUrl TEXT NOT NULL);
-`);
-    await database.runAsync(
-      "INSERT INTO user (userId,firstName,lastName,createdAt,photoUrl) VALUES (?, ?, ?, ?, ?)",
-      userObj.userId,
-      userObj.firstName,
-      userObj.lastName,
-      userObj.createdAt,
-      userObj.photoUrl
-    );
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
 export const AddRecordToDB = async (tableName: string, record: any) => {
   try {
     const database: any = await openDatabase();
@@ -92,5 +58,19 @@ export const findDBrecord = async (tableName: string) => {
     return JSON.parse(firstRow.record);
   } catch (error) {
     return null;
+  }
+};
+export const findLocalUser = async () => await findDBrecord("user");
+
+export const AddUserToDB = async (userObj: User) =>
+  await AddRecordToDB("user", userObj);
+
+export const deleteTable = async (tableName: string) => {
+  try {
+    const database: any = await openDatabase();
+    await database.getFirstAsync(`DROP TABLE ${tableName}`);
+    return true;
+  } catch (error) {
+    return false;
   }
 };

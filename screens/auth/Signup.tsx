@@ -66,6 +66,8 @@ const SignUp = ({ handleGoToLogin }: { handleGoToLogin: () => void }) => {
         nationalId: null,
         driverLicenseId: null,
         createdAt: new Date(),
+        email: state.email,
+        employee: false,
       };
 
       const driverAdded = await createDocEntry(

@@ -5,10 +5,10 @@ import Svg, { Rect } from "react-native-svg";
 import { StyledView } from "./StyledComponents";
 
 const ProgressBar = ({ progress }: { progress: number }) => {
-  const barWidth = 230;
+  const barWidth = 365;
   const progressWidth = (progress / 100) * barWidth;
   return (
-    <StyledView>
+    <StyledView className="w-full">
       <Svg width={barWidth} height="7">
         <Rect
           width={barWidth}

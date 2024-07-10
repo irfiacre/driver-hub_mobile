@@ -1,5 +1,5 @@
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
@@ -34,6 +34,7 @@ import { LogBox } from "react-native";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const router = useRouter();
   LogBox.ignoreAllLogs();
   const [loaded] = useFonts({
     Poppins_100Thin,
@@ -72,6 +73,7 @@ export default function RootLayout() {
   const handleUserHasSignedIn = async () => {
     const localUser = await findLocalUser();
     setUser(localUser);
+    router.navigate("/");
   };
 
   return (
