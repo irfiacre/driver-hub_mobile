@@ -1,13 +1,9 @@
 import { Tabs } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import React, { useContext, useEffect, useState } from "react";
 import {
   MaterialCommunityIcons,
   FontAwesome6,
   AntDesign,
-  Ionicons,
   FontAwesome,
 } from "@expo/vector-icons";
 import { PRIMARY_COLOR } from "@/constants/fixtures";
@@ -18,15 +14,18 @@ import {
 import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
 import isAuth from "@/components/isAuth";
 import { AddRecordToDB, findDBrecord } from "@/services/database/helpers";
+import { AppContext } from "@/context";
 
 const TabLayout = ({ user }: { user: any }) => {
   const [application, setApplication] = useState<any>({});
   const [showTraining, setShowTraining] = useState(false);
+  const { _, updateContextState } = useContext<any>(AppContext);
 
   useEffect(() => {
     (async () => {
       if (application.applicant) {
         await AddRecordToDB("application", application);
+        updateContextState({ application, user });
       }
     })();
   }, [application]);
@@ -38,22 +37,6 @@ const TabLayout = ({ user }: { user: any }) => {
 
   useEffect(() => {
     (async () => {
-      const record = await findDBrecord("application");
-      if (record.applicant) {
-        setApplication(record);
-        setShowTraining(record.status === "approved");
-      } else {
-        const applicationData = await findDocEntryByField(
-          APPLICATIONS_COLLECTION,
-          "applicant.userId",
-          user.userId
-        );
-        if (applicationData) {
-          setApplication(applicationData);
-          setShowTraining(applicationData.status === "approved");
-        }
-      }
-
       const applicationData = await findDocEntryByField(
         APPLICATIONS_COLLECTION,
         "applicant.userId",
@@ -157,4 +140,4 @@ const TabLayout = ({ user }: { user: any }) => {
   );
 };
 
-export default TabLayout;
+export default isAuth(TabLayout);

@@ -29,6 +29,8 @@ import { StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { findLocalUser } from "@/services/database/helpers";
 import { LogBox } from "react-native";
+import { syncEmployeeDetails } from "@/utils/helpers";
+import { AppContextProvider } from "@/context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -72,12 +74,13 @@ export default function RootLayout() {
 
   const handleUserHasSignedIn = async () => {
     const localUser = await findLocalUser();
+    await syncEmployeeDetails(localUser.userId);
     setUser(localUser);
     router.navigate("/");
   };
 
   return (
-    <ThemeProvider value={DefaultTheme}>
+    <AppContextProvider>
       <SafeAreaProvider>
         {user ? (
           <SafeAreaView style={styles.container}>
@@ -92,7 +95,7 @@ export default function RootLayout() {
           </SafeAreaView>
         )}
       </SafeAreaProvider>
-    </ThemeProvider>
+    </AppContextProvider>
   );
 }
 

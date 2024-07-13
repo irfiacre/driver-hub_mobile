@@ -1,5 +1,8 @@
-import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
-import { findDBrecord } from "@/services/database/helpers";
+import {
+  APPLICATIONS_COLLECTION,
+  DRIVERS_COLLECTION_NAME,
+} from "@/constants/collectionNames";
+import { AddRecordToDB, findDBrecord } from "@/services/database/helpers";
 import { findDocEntryByField } from "@/services/firebase/helpers";
 
 export const emailValidate = (email: string) => {
@@ -30,7 +33,7 @@ export const hasEmptyFields = (obj: any): boolean => {
 
 export const findApplication = async (userId: string) => {
   const record = await findDBrecord("application");
-  if (record.applicant) {
+  if (record) {
     return record;
   } else {
     const applicationData = await findDocEntryByField(
@@ -42,4 +45,19 @@ export const findApplication = async (userId: string) => {
     if (applicationData) return applicationData;
   }
   return {};
+};
+
+export const syncEmployeeDetails = async (userId: string) => {
+  try {
+    const updatedDriver = await findDocEntryByField(
+      DRIVERS_COLLECTION_NAME,
+      "userId",
+      userId
+    );
+    if (updatedDriver) await AddRecordToDB("user", updatedDriver);
+
+    return true;
+  } catch (error) {
+    return false;
+  }
 };

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { findDocEntryByField } from "@/services/firebase/helpers";
 import { findLocalUser } from "@/services/database/helpers";
 
 export default function isAuth(Component: any) {
@@ -12,7 +11,6 @@ export default function isAuth(Component: any) {
     useEffect(() => {
       (async () => {
         const localUser = await findLocalUser();
-
         if (localUser) {
           setUser(localUser);
         } else {

@@ -7,13 +7,10 @@ import {
   StyledText,
   StyledView,
 } from "@/components/StyledComponents";
-import LogoComponent from "@/components/logo/LogoComponent";
 import UserTopComponent from "@/components/UserTopComponent";
 import BaseCard from "@/components/cards/BaseCard";
 
 const Application = ({ applicationData }: { applicationData: any }) => {
-  console.log("----------", applicationData);
-
   return (
     <StyledScrollView className="h-full">
       <UserTopComponent data={applicationData} />
