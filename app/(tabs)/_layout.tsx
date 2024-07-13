@@ -78,7 +78,7 @@ const TabLayout = ({ user }: { user: any }) => {
       />
 
       <Tabs.Screen
-        name="training"
+        name="training/index"
         options={
           showTraining
             ? {

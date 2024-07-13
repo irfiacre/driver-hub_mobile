@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, Alert } from "react-native";
+import { StatusBar, Alert } from "react-native";
 import React, { useState } from "react";
 import Spinner from "react-native-loading-spinner-overlay";
 import { StyledView } from "@/components/StyledComponents";

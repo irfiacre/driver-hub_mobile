@@ -54,7 +54,5 @@ export const subscribeToDocument = (
     onSnapshot(doc(database, collectionName, docId), (snapshot) => {
       onDataChange(snapshot.data());
     });
-  } catch (error: any) {
-    throw error;
-  }
+  } catch (error: any) {}
 };

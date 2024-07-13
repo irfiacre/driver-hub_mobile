@@ -5,6 +5,7 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { styled } from "nativewind";
 
@@ -14,3 +15,4 @@ export const StyledImage = styled(Image);
 export const StyledButton = styled(Pressable);
 export const StyledTextInput = styled(TextInput);
 export const StyledScrollView = styled(ScrollView);
+export const StyledTouchableOpacity = styled(TouchableOpacity);
