@@ -6,9 +6,11 @@ import {
   onSnapshot,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { app } from "@/utils/firebase";
+import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
 
 export const database = getFirestore(app);
 
@@ -44,6 +46,19 @@ export const createDocEntry = async (collectionName: string, docObj: any) => {
     return false;
   }
 };
+export const updateDocEntry = async (
+  collectionName: string,
+  docEntryId: string,
+  docObj: any
+): Promise<boolean> => {
+  try {
+    const quizDocRef = doc(database, collectionName, docEntryId);
+    await updateDoc(quizDocRef, docObj);
+    return true;
+  } catch (error: any) {
+    return { ...error };
+  }
+};
 
 export const subscribeToDocument = (
   collectionName: string,
@@ -55,4 +70,21 @@ export const subscribeToDocument = (
       onDataChange(snapshot.data());
     });
   } catch (error: any) {}
+};
+
+export const updateApplication = async (
+  applicationId: string,
+  newApplicationInfo: any
+): Promise<boolean> => {
+  try {
+    await updateDocEntry(
+      APPLICATIONS_COLLECTION,
+      applicationId,
+      newApplicationInfo
+    );
+
+    return true;
+  } catch (error: any) {
+    return { ...error };
+  }
 };

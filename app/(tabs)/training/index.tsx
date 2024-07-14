@@ -17,6 +17,10 @@ import { useRouter } from "expo-router";
 const training = () => {
   const { contextState, _ } = useContext<any>(AppContext);
   const router = useRouter();
+  const unfinishedCourses =
+    contextState.application.onboardingPlan.courses.filter(
+      (course: any) => course.completed === false
+    );
 
   return (
     <StyledView className="bg-white h-full px-2">
@@ -28,7 +32,7 @@ const training = () => {
         <StyledView>
           <FlatList
             horizontal
-            data={contextState.application.onboardingPlan.courses}
+            data={unfinishedCourses}
             renderItem={({ item }) => (
               <StyledView>
                 <TopCourseCard course={item} />
