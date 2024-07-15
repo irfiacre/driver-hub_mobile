@@ -19,7 +19,7 @@ import { AppContext } from "@/context";
 const TabLayout = ({ user }: { user: any }) => {
   const [application, setApplication] = useState<any>({});
   const [showTraining, setShowTraining] = useState(false);
-  const { _, updateContextState } = useContext<any>(AppContext);
+  const { _, updateContextState, resetContext } = useContext<any>(AppContext);
 
   useEffect(() => {
     (async () => {

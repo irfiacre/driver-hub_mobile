@@ -58,7 +58,7 @@ const Login = ({ onSignin }: { onSignin: (text?: string) => void }) => {
   };
   return (
     <StyledView className="p-8 bg-authBackground h-full">
-      <Spinner visible={loading} />
+      {/* <Spinner visible={loading} /> */}
       <StyledView className="items-center">
         <LogoComponent medium />
       </StyledView>

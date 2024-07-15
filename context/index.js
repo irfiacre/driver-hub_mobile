@@ -19,7 +19,13 @@ const AppContextProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={{ contextState, updateContextState }}>
+    <AppContext.Provider
+      value={{
+        contextState,
+        updateContextState,
+        resetContext: () => setContextState(initialState),
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -15,7 +15,7 @@ import WiderCourseCard from "@/components/cards/WiderCourseCard";
 import { useRouter } from "expo-router";
 
 const training = () => {
-  const { contextState, _ } = useContext<any>(AppContext);
+  const { contextState, _, resetContext } = useContext<any>(AppContext);
   const router = useRouter();
   const unfinishedCourses =
     contextState.application.onboardingPlan.courses.filter(

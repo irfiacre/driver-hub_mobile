@@ -26,7 +26,7 @@ const message = () => {
   const [messages, setMessages] = useState<any>([]);
   const [receiver, setReceiver] = useState<any>([]);
   const [sender, setSender] = useState<any>([]);
-  const { contextState, _ } = useContext<any>(AppContext);
+  const { contextState, _, resetContext } = useContext<any>(AppContext);
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
@@ -58,8 +58,10 @@ const message = () => {
           .filter((doc) => {
             const docData = doc.data();
             return (
-              docData.senderId === sender.userId &&
-              docData.receiverId === receiver.userId
+              (docData.senderId === sender.userId &&
+                docData.receiverId === receiver.userId) ||
+              (docData.receiverId === sender.userId &&
+                docData.senderId === receiver.userId)
             );
           })
           .map((doc) => ({
@@ -96,9 +98,15 @@ const message = () => {
     <GiftedChat
       messages={messages}
       onSend={(messages) => onSend(messages)}
-      user={{ ...sender, avatar: PLACEHOLDER_IMG }}
+      user={{
+        ...sender,
+        avatar:
+          contextState.application.baseInformation.passportPhotoUrl ||
+          PLACEHOLDER_IMG,
+      }}
       messagesContainerStyle={{
         backgroundColor: "#fff",
+        padding: 10,
       }}
     />
   );

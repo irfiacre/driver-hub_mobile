@@ -13,7 +13,7 @@ const CoursePage = () => {
     "overview"
   );
   const [selectedMaterial, setSelectedMaterial] = useState<any>({});
-  const { contextState, updateContextState } = useContext<any>(AppContext);
+  const { contextState, updateContextState, _ } = useContext<any>(AppContext);
 
   useEffect(() => {
     const courseData = contextState.application.onboardingPlan.courses.find(

@@ -9,12 +9,13 @@ import {
 } from "@/components/StyledComponents";
 import UserTopComponent from "@/components/UserTopComponent";
 import BaseCard from "@/components/cards/BaseCard";
+import { router } from "expo-router";
 
 const Application = ({ applicationData }: { applicationData: any }) => {
   return (
     <StyledScrollView className="h-full">
       <UserTopComponent data={applicationData} />
-      <StyledView className="px-2 py-10">
+      <StyledView className="px-6 py-10">
         <StyledText className="text-textDarkColor text-xl font-poppinsMedium p-4">
           Statistics
         </StyledText>
@@ -39,10 +40,10 @@ const Application = ({ applicationData }: { applicationData: any }) => {
         </BaseCard>
       </StyledView>
 
-      <StyledView className="py-4 px-2">
+      <StyledView className="py-4 px-6">
         <StyledButton
           className="px-4 w-full flex flex-row justify-between items-center py-3.5 bg-backgroundColor3 rounded-xl"
-          // onPress={()=> }
+          onPress={() => router.navigate("/training")}
         >
           <StyledView className="w-3/4">
             <StyledText className="text-2xl font-poppinsMedium">

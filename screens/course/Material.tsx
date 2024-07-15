@@ -28,7 +28,8 @@ const MaterialScreen = ({
   handleBack: () => void;
 }) => {
   const { width } = useWindowDimensions();
-  const { contextState, updateContextState } = useContext<any>(AppContext);
+  const { contextState, updateContextState, resetContext } =
+    useContext<any>(AppContext);
   const [updating, setUpdating] = useState(false);
 
   const handleMarkCompleted = async () => {

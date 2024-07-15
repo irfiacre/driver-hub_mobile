@@ -7,7 +7,7 @@ import BaseCard from "./cards/BaseCard";
 
 const UserTopComponent = ({ data }: { data: any }) => {
   return (
-    <StyledView className="bg-primary pt-10 px-2 h-1/4 justify-center">
+    <StyledView className="bg-primary pt-10 px-2 h-[25vh] justify-center">
       <StatusBar backgroundColor="#d51b53" barStyle="light-content" />
       <StyledView className="flex flex-row justify-between items-center py-5">
         <StyledView className="pl-4">

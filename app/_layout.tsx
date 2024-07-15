@@ -31,6 +31,7 @@ import { findLocalUser } from "@/services/database/helpers";
 import { LogBox } from "react-native";
 import { syncEmployeeDetails } from "@/utils/helpers";
 import { AppContextProvider } from "@/context";
+import Spinner from "react-native-loading-spinner-overlay";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -59,6 +60,7 @@ export default function RootLayout() {
     Poppins_900Black_Italic,
   });
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -73,15 +75,21 @@ export default function RootLayout() {
   }
 
   const handleUserHasSignedIn = async () => {
+    setLoading(true);
     const localUser = await findLocalUser();
-    await syncEmployeeDetails(localUser.userId);
+    if (localUser) {
+      await syncEmployeeDetails(localUser.userId);
+    }
     setUser(localUser);
+    setLoading(false);
     router.navigate("/");
   };
 
   return (
     <AppContextProvider>
       <SafeAreaProvider>
+        <Spinner visible={loading} />
+
         {user ? (
           <SafeAreaView style={styles.container}>
             <Stack>

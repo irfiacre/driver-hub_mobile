@@ -55,5 +55,10 @@ export const addUser = async (email: string, password: string) => {
 };
 
 export const signOutUser = async () => {
-  await signOut(auth);
+  try {
+    await signOut(auth);
+    return true;
+  } catch (error: any) {
+    return false;
+  }
 };

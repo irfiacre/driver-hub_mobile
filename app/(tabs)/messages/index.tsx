@@ -11,7 +11,7 @@ import { AppContext } from "@/context";
 
 const message = () => {
   const [staffUsers, setStaffUsers] = useState<any>([]);
-  const { _, updateContextState } = useContext<any>(AppContext);
+  const { _, updateContextState, resetContext } = useContext<any>(AppContext);
 
   const router = useRouter();
   useLayoutEffect(() => {
