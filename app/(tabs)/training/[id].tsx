@@ -1,11 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { StyledView } from "@/components/StyledComponents";
-import {
-  findDocEntryByField,
-  subscribeToDocument,
-} from "@/services/firebase/helpers";
-import { COURSES_COLLECTION } from "@/constants/collectionNames";
 import Spinner from "react-native-loading-spinner-overlay";
 import OverviewScreen from "@/screens/course/Overview";
 import MaterialScreen from "@/screens/course/Material";

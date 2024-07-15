@@ -119,9 +119,9 @@ const TabLayout = ({ user }: { user: any }) => {
         }}
       />
       <Tabs.Screen
-        name="message"
+        name="messages/index"
         options={{
-          title: "Message",
+          title: "Chat",
           tabBarIcon: ({ color, focused }) => (
             <AntDesign name="message1" size={24} color={color} />
           ),
@@ -135,6 +135,14 @@ const TabLayout = ({ user }: { user: any }) => {
             <MaterialCommunityIcons name="account" size={24} color={color} />
           ),
         }}
+      />
+      <Tabs.Screen
+        name="training/[id]"
+        options={{ tabBarButton: (props) => null }}
+      />
+      <Tabs.Screen
+        name="messages/[id]"
+        options={{ tabBarButton: (props) => null }}
       />
     </Tabs>
   );

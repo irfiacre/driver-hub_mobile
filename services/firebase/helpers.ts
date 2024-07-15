@@ -10,7 +10,10 @@ import {
   where,
 } from "firebase/firestore";
 import { app } from "@/utils/firebase";
-import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
+import {
+  APPLICATIONS_COLLECTION,
+  STAFF_COLLECTION,
+} from "@/constants/collectionNames";
 
 export const database = getFirestore(app);
 
@@ -87,4 +90,16 @@ export const updateApplication = async (
   } catch (error: any) {
     return { ...error };
   }
+};
+
+export const findStaffUsers = async () => {
+  let result: any[] = [];
+  try {
+    const querySnapshot = await getDocs(collection(database, "staff"));
+    result = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (e) {}
+  return result;
 };

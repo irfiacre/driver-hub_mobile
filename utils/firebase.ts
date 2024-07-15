@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+// const admin = require("firebase-admin");
 
 const firebaseConfig = {
   apiKey: "AIzaSyAoJlWg9Y6zjW5ysqt3JXYj8-zFv4ismvU",
@@ -13,3 +14,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+
+// export const fireAdmin = admin.initializeApp({
+//   credential: admin.credential.applicationDefault(),
+//   databaseURL: firebaseConfig.databaseURL,
+// });
