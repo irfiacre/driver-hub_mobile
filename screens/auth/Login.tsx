@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   StyledButton,
   StyledText,
+  StyledTouchableOpacity,
   StyledView,
 } from "@/components/StyledComponents";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -58,7 +59,7 @@ const Login = ({ onSignin }: { onSignin: (text?: string) => void }) => {
   };
   return (
     <StyledView className="p-8 bg-authBackground h-full">
-      {/* <Spinner visible={loading} /> */}
+      <Spinner visible={loading} />
       <StyledView className="items-center">
         <LogoComponent medium />
       </StyledView>
@@ -97,14 +98,14 @@ const Login = ({ onSignin }: { onSignin: (text?: string) => void }) => {
         )}
       </StyledView>
       <StyledView className="w-full flex flex-row justify-between gap-2 items-start py-3.5">
-        <StyledButton
+        <StyledTouchableOpacity
           className=" w-full px-10 py-4 bg-primary rounded-xl text-center"
           onPress={handleLoginIntoAccount}
         >
           <StyledText className="text-white text-lg text-center font-poppinsMedium">
             Login
           </StyledText>
-        </StyledButton>
+        </StyledTouchableOpacity>
       </StyledView>
 
       <StyledView>

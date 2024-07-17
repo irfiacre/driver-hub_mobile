@@ -79,10 +79,10 @@ export default function RootLayout() {
     const localUser = await findLocalUser();
     if (localUser) {
       await syncEmployeeDetails(localUser.userId);
+      setUser(localUser);
+      router.navigate("/");
     }
-    setUser(localUser);
     setLoading(false);
-    router.navigate("/");
   };
 
   return (
