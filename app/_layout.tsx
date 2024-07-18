@@ -27,7 +27,7 @@ import {
 import Home from "./Home";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { findLocalUser } from "@/services/database/helpers";
+import { deleteTable, findLocalUser } from "@/services/database/helpers";
 import { LogBox } from "react-native";
 import { syncEmployeeDetails } from "@/utils/helpers";
 import { AppContextProvider } from "@/context";
@@ -75,8 +75,11 @@ export default function RootLayout() {
   }
 
   const handleUserHasSignedIn = async () => {
-    setLoading(true);
+    await deleteTable("user");
+    await setLoading(true);
     const localUser = await findLocalUser();
+    console.log("------->", localUser);
+
     if (localUser) {
       await syncEmployeeDetails(localUser.userId);
       setUser(localUser);
