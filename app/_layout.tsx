@@ -78,7 +78,7 @@ export default function RootLayout() {
     await deleteTable("user");
     await setLoading(true);
     const localUser = await findLocalUser();
-    console.log("------->", localUser);
+    // console.log("------->", localUser);
     if (localUser) {
       await syncEmployeeDetails(localUser.userId);
       setUser(localUser);
