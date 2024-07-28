@@ -79,6 +79,8 @@ export default function RootLayout() {
     await setLoading(true);
     const localUser = await findLocalUser();
     // console.log("------->", localUser);
+    console.log("=====", loading);
+
     if (localUser) {
       await syncEmployeeDetails(localUser.userId);
       setUser(localUser);
