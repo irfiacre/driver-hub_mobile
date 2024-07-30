@@ -75,12 +75,8 @@ export default function RootLayout() {
   }
 
   const handleUserHasSignedIn = async () => {
-    await deleteTable("user");
-    await setLoading(true);
+    setLoading(true);
     const localUser = await findLocalUser();
-    // console.log("------->", localUser);
-    console.log("=====", loading);
-
     if (localUser) {
       await syncEmployeeDetails(localUser.userId);
       setUser(localUser);
@@ -91,22 +87,21 @@ export default function RootLayout() {
 
   return (
     <AppContextProvider>
-      <SafeAreaProvider>
-        <Spinner visible={loading} />
-
-        {user ? (
-          <SafeAreaView style={styles.container}>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </SafeAreaView>
-        ) : (
-          <SafeAreaView style={styles.container}>
-            <Home onSignin={handleUserHasSignedIn} />
-          </SafeAreaView>
-        )}
-      </SafeAreaProvider>
+      {/* <SafeAreaProvider> */}
+      <Spinner visible={loading} />
+      {user ? (
+        <SafeAreaView style={styles.container}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </SafeAreaView>
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <Home onSignin={handleUserHasSignedIn} />
+        </SafeAreaView>
+      )}
+      {/* </SafeAreaProvider> */}
     </AppContextProvider>
   );
 }

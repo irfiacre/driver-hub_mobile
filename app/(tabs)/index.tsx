@@ -40,15 +40,13 @@ const Home = ({ user }: { user: any }) => {
   return (
     <StyledView className="h-full">
       <Spinner visible={loading} />
-      {application.applicant && (
-        <StyledView>
-          {driverDoc.employee ? (
-            <Application applicationData={application} />
-          ) : (
-            <NoApplication handleSubmitApplication={handleSubmitApplication} />
-          )}
-        </StyledView>
-      )}
+      <StyledView>
+        {application.applicant && driverDoc.employee ? (
+          <Application applicationData={application} />
+        ) : (
+          <NoApplication handleSubmitApplication={handleSubmitApplication} />
+        )}
+      </StyledView>
     </StyledView>
   );
 };
