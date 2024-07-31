@@ -2,16 +2,18 @@ import { StatusBar } from "react-native";
 import React, { useContext, useLayoutEffect, useState } from "react";
 import { findStaffUsers } from "@/services/firebase/helpers";
 import {
+  StyledText,
   StyledTouchableOpacity,
   StyledView,
 } from "@/components/StyledComponents";
 import ChatPartner from "@/components/ChatPartner";
 import { useRouter } from "expo-router";
 import { AppContext } from "@/context";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const message = () => {
   const [staffUsers, setStaffUsers] = useState<any>([]);
-  const { _, updateContextState, resetContext } = useContext<any>(AppContext);
+  const { _, updateContextState } = useContext<any>(AppContext);
 
   const router = useRouter();
   useLayoutEffect(() => {
@@ -25,10 +27,13 @@ const message = () => {
   return (
     <StyledView className="bg-white h-full">
       <StatusBar backgroundColor="white" barStyle={"dark-content"} />
+      <StyledText className="mx-4 text-textDarkColor text-xl font-poppinsBold p-4">
+        Chats
+      </StyledText>
       {staffUsers.map((elt: any) => (
         <StyledTouchableOpacity
           key={elt.userId}
-          className="m-4"
+          className="mx-4"
           onPress={() => router.navigate(`messages/${elt.userId}`)}
         >
           <ChatPartner
@@ -38,6 +43,9 @@ const message = () => {
           />
         </StyledTouchableOpacity>
       ))}
+      <StyledText className="text-borderColorLight text-xs font-poppinsRegular p-4 text-center">
+        End of Chats
+      </StyledText>
     </StyledView>
   );
 };

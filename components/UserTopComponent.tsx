@@ -1,6 +1,6 @@
 import React from "react";
 import { StyledImage, StyledText, StyledView } from "./StyledComponents";
-import { StatusBar } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import ProgressBar from "./ProgressBar";
 import BaseCard from "./cards/BaseCard";
@@ -8,7 +8,10 @@ import BaseCard from "./cards/BaseCard";
 const UserTopComponent = ({ data }: { data: any }) => {
   return (
     <StyledView className="bg-primary pt-10 px-2 h-[25vh] justify-center">
-      <StatusBar backgroundColor="#d51b53" barStyle="light-content" />
+      <StatusBar
+        backgroundColor="#d51b53"
+        barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
+      />
       <StyledView className="flex flex-row justify-between items-center py-5">
         <StyledView className="pl-4">
           <StyledText className="text-white text-2xl font-poppinsBold h-fit flex justify-center items-center">

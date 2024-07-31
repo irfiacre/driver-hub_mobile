@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyledImage, StyledText, StyledView } from "./StyledComponents";
 import { findLocalUser } from "@/services/database/helpers";
-import { StatusBar } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { PLACEHOLDER_IMG } from "@/constants/fixtures";
 
 const TopComponent = () => {
@@ -19,7 +19,10 @@ const TopComponent = () => {
   const userImg = user?.photoUrl ? user.photoUrl : PLACEHOLDER_IMG;
   return (
     <StyledView className="bg-primary py-10 px-2 h-2/4 justify-center">
-      <StatusBar backgroundColor="#d51b53" barStyle="light-content" />
+      <StatusBar
+        backgroundColor="#d51b53"
+        barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
+      />
       <StyledView className="flex flex-row justify-between h-full items-center">
         <StyledView className="px-8">
           <StyledText className="text-white text-5xl font-poppinsLight">

@@ -80,6 +80,7 @@ export default function RootLayout() {
     if (localUser) {
       await syncEmployeeDetails(localUser.userId);
       setUser(localUser);
+      setLoading(false);
       router.navigate("/");
     }
     setLoading(false);
@@ -87,21 +88,21 @@ export default function RootLayout() {
 
   return (
     <AppContextProvider>
-      {/* <SafeAreaProvider> */}
-      <Spinner visible={loading} />
-      {user ? (
-        <SafeAreaView style={styles.container}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </SafeAreaView>
-      ) : (
-        <SafeAreaView style={styles.container}>
-          <Home onSignin={handleUserHasSignedIn} />
-        </SafeAreaView>
-      )}
-      {/* </SafeAreaProvider> */}
+      <SafeAreaProvider>
+        <Spinner visible={loading} />
+        {user ? (
+          <SafeAreaView style={styles.container}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </SafeAreaView>
+        ) : (
+          <SafeAreaView style={styles.container}>
+            <Home onSignin={handleUserHasSignedIn} />
+          </SafeAreaView>
+        )}
+      </SafeAreaProvider>
     </AppContextProvider>
   );
 }

@@ -1,14 +1,9 @@
-import { StyleSheet } from "react-native";
 import { StyledView } from "@/components/StyledComponents";
 import { useRouter } from "expo-router";
 import NoApplication from "@/screens/dashboard/NoApplication";
 import { useEffect, useState } from "react";
-import { findDBrecord } from "@/services/database/helpers";
 import { findDocEntryByField } from "@/services/firebase/helpers";
-import {
-  APPLICATIONS_COLLECTION,
-  DRIVERS_COLLECTION_NAME,
-} from "@/constants/collectionNames";
+import { DRIVERS_COLLECTION_NAME } from "@/constants/collectionNames";
 import isAuth from "@/components/isAuth";
 import Application from "@/screens/dashboard/Application";
 import Spinner from "react-native-loading-spinner-overlay";
