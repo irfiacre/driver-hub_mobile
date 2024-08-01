@@ -44,7 +44,7 @@ const message = () => {
         </StyledTouchableOpacity>
       ))}
       <StyledText className="text-borderColorLight text-xs font-poppinsRegular p-4 text-center">
-        End of Chats
+        - End of Chats -
       </StyledText>
     </StyledView>
   );
