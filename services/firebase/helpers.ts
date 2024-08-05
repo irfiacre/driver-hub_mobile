@@ -103,3 +103,28 @@ export const findStaffUsers = async () => {
   } catch (e) {}
   return result;
 };
+
+export const searchDocument = async (
+  collectionName: string,
+  fieldName: string,
+  fieldValue: string
+) => {
+  const result: any = [];
+  try {
+    const resultQuery = query(
+      collection(database, collectionName),
+      where(fieldName, ">=", fieldValue),
+      where(fieldName, "<=", `${fieldValue}\uf8ff`)
+    );
+
+    const resultSnapshot: any = await getDocs(resultQuery);
+    resultSnapshot.forEach((doc: any) => {
+      const docData = { id: doc.id, ...doc.data() };
+      result.push(docData);
+    });
+  } catch (error: any) {
+    return { ...error };
+  }
+
+  return result;
+};

@@ -99,7 +99,7 @@ const MaterialScreen = ({
       <Spinner visible={updating} />
       <StyledView className="px-4 flex flex-row items-center justify-start gap-5">
         <StyledTouchableOpacity
-          className=" py-4 rounded-full"
+          className="py-4 rounded-full"
           onPress={handleBack}
         >
           <Ionicons name="chevron-back" size={24} color="white" />
