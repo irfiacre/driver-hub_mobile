@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyledText,
   StyledTouchableOpacity,
@@ -13,22 +13,29 @@ import {
 } from "@/services/firebase/helpers";
 import { COURSES_COLLECTION } from "@/constants/collectionNames";
 import Spinner from "react-native-loading-spinner-overlay";
+import SearchResult from "@/components/SearchResult";
+import { useRouter } from "expo-router";
 
 const search = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<Array<any>>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (searchText.length <= 0) {
+      setSearchResult([]);
+    }
+  }, [searchText]);
 
   const handleSearch = async () => {
     setLoading(true);
-
     const result = await searchDocument(
       COURSES_COLLECTION,
       "title",
       searchText
     );
-    console.log("-----------", result);
-
+    setSearchResult(result);
     setLoading(false);
   };
 
@@ -52,6 +59,20 @@ const search = () => {
         >
           <AntDesign name="search1" size={24} color="white" />
         </StyledTouchableOpacity>
+      </StyledView>
+      <StyledView className="pt-4">
+        {searchResult.map((elt: any) => (
+          <StyledTouchableOpacity
+            key={elt.userId}
+            onPress={() => router.navigate(`/training/${elt.id}`)}
+          >
+            <SearchResult
+              title={elt.title}
+              photoUrl={elt.thumbnail?.url}
+              description={elt.description}
+            />
+          </StyledTouchableOpacity>
+        ))}
       </StyledView>
     </StyledView>
   );
