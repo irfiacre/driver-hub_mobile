@@ -1,17 +1,36 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyledButton,
   StyledImage,
   StyledScrollView,
   StyledText,
+  StyledTouchableOpacity,
   StyledView,
 } from "@/components/StyledComponents";
 import UserTopComponent from "@/components/UserTopComponent";
 import BaseCard from "@/components/cards/BaseCard";
 import { router } from "expo-router";
+import { RECOMMENDED_COURSES_COLLECTION } from "@/constants/collectionNames";
+import { getCollectionEntries } from "@/services/firebase/helpers";
+import { FlatList } from "react-native";
+import WiderCourseCard from "@/components/cards/WiderCourseCard";
 
 const Application = ({ applicationData }: { applicationData: any }) => {
+  const finishedCourses = applicationData.onboardingPlan.courses.filter(
+    (elt: any) => elt.completed
+  );
+
+  const [recommendedCourses, setRecommendedCourses] = useState<any>([]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await getCollectionEntries(RECOMMENDED_COURSES_COLLECTION);
+
+      setRecommendedCourses(result);
+    })();
+  }, []);
+
   return (
     <StyledScrollView className="h-full">
       <UserTopComponent data={applicationData} />
@@ -26,7 +45,7 @@ const Application = ({ applicationData }: { applicationData: any }) => {
             </StyledText>
             <StyledText className="text-textDarkColor text-base font-poppinsMedium pr-4">
               {applicationData.onboardingPlan.totalCourses -
-                applicationData.onboardingPlan.finishedCourses}
+                finishedCourses.length}
             </StyledText>
           </StyledView>
           <StyledView className="flex flex-row justify-between items-center py-2">
@@ -34,32 +53,29 @@ const Application = ({ applicationData }: { applicationData: any }) => {
               Finished Courses
             </StyledText>
             <StyledText className="text-textDarkColor text-base font-poppinsMedium pr-4">
-              {applicationData.onboardingPlan.finishedCourses}
+              {finishedCourses.length}
             </StyledText>
           </StyledView>
         </BaseCard>
       </StyledView>
-
-      <StyledView className="py-4 px-6">
-        <StyledButton
-          className="px-4 w-full flex flex-row justify-between items-center py-3.5 bg-backgroundColor3 rounded-xl"
-          onPress={() => router.navigate("/training")}
-        >
-          <StyledView className="w-3/4">
-            <StyledText className="text-2xl font-poppinsMedium">
-              Continue onboarding
-            </StyledText>
-            <StyledText className="text-base font-poppinsMedium text-modalBackground">
-              Taking remaining Trainings
-            </StyledText>
-          </StyledView>
-          <StyledView>
-            <StyledImage
-              source={require("../../assets/images/onboarding1.png")}
-              className="w-24 h-24"
-            />
-          </StyledView>
-        </StyledButton>
+      <StyledView>
+        <StyledText className="text-xl font-poppinsBold text-textDarkColor p-4">
+          Recommended Courses:
+        </StyledText>
+        <StyledView>
+          <FlatList
+            data={recommendedCourses}
+            renderItem={({ item }) => (
+              <StyledTouchableOpacity
+                className="px-5 my-1 mx-4 w-full"
+                onPress={() => router.navigate(`/training/${item.id}`)}
+              >
+                <WiderCourseCard course={item} />
+              </StyledTouchableOpacity>
+            )}
+            keyExtractor={(item) => item.title}
+          />
+        </StyledView>
       </StyledView>
     </StyledScrollView>
   );

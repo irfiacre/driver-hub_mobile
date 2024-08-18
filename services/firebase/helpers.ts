@@ -17,6 +17,20 @@ import {
 
 export const database = getFirestore(app);
 
+export const getCollectionEntries = async (collectionName: string) => {
+  let result: any[] = [];
+  try {
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    result = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error: any) {
+    return { ...error };
+  }
+  return result;
+};
+
 export const findDocEntryByField = async (
   collectionName: string,
   fieldName: string,

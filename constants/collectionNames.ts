@@ -4,3 +4,4 @@ export const APPLICATIONS_COLLECTION = "applications";
 export const COURSES_COLLECTION = "courses";
 export const STAFF_COLLECTION = "staff";
 export const CHAT_COLLECTION = "chat";
+export const RECOMMENDED_COURSES_COLLECTION = "recommendedCourses";

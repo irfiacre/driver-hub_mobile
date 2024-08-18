@@ -5,12 +5,15 @@ import { StyledView } from "@/components/StyledComponents";
 import FinalScreen from "@/screens/application/Final";
 import BaseScreen from "@/screens/application/Base";
 import { findLocalUser } from "@/services/database/helpers";
-import { APPLICATIONS_COLLECTION } from "@/constants/collectionNames";
-import { createDocEntry } from "@/services/firebase/helpers";
+import {
+  APPLICATIONS_COLLECTION,
+  DRIVERS_COLLECTION_NAME,
+} from "@/constants/collectionNames";
+import { createDocEntry, updateDocEntry } from "@/services/firebase/helpers";
 import { useRouter } from "expo-router";
 
 const Application = () => {
-  const [applicationInfo, setApplicationInfo] = useState({
+  const [applicationInfo, setApplicationInfo] = useState<any>({
     baseInformation: null,
     documentInformation: null,
     status: "pending",
@@ -18,7 +21,7 @@ const Application = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const handleSubmitBaseInfo = (data: any) =>
-    setApplicationInfo((prevState) => ({
+    setApplicationInfo((prevState: any) => ({
       ...prevState,
       baseInformation: data,
     }));
@@ -38,7 +41,10 @@ const Application = () => {
         totalCourses: 0,
       },
     };
-
+    await updateDocEntry(DRIVERS_COLLECTION_NAME, user.id, {
+      ...user,
+      photoUrl: applicationInfo.baseInformation?.passportPhotoUrl,
+    });
     const applicationSent = await createDocEntry(
       APPLICATIONS_COLLECTION,
       applicationObj
