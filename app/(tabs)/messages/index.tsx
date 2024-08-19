@@ -39,7 +39,7 @@ const message = () => {
           <ChatPartner
             name={`${elt.firstName} ${elt.lastName}`}
             photoUrl={elt.photoUrl}
-            lastMessage="Congratulations on completing the first lesson, keep up the good work!"
+            lastMessage={`(${elt.role}) - Available at your service`}
           />
         </StyledTouchableOpacity>
       ))}

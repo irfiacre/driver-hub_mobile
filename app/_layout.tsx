@@ -1,5 +1,10 @@
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
-import { Stack, useRouter } from "expo-router";
+import {
+  Stack,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
@@ -38,6 +43,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter();
+  const params = useGlobalSearchParams();
   LogBox.ignoreAllLogs();
   const [loaded] = useFonts({
     Poppins_100Thin,
@@ -81,7 +87,8 @@ export default function RootLayout() {
       await syncEmployeeDetails(localUser.userId);
       setUser(localUser);
       setLoading(false);
-      router.navigate("/");
+      // router.navigate("/");
+      router.replace({ pathname: "/", params: { hasLoggedOut: "" } });
     }
     setLoading(false);
   };
@@ -90,7 +97,7 @@ export default function RootLayout() {
     <AppContextProvider>
       <SafeAreaProvider>
         <Spinner visible={loading} />
-        {user ? (
+        {user && !params.hasLoggedOut ? (
           <SafeAreaView style={styles.container}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

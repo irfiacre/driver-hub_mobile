@@ -39,10 +39,12 @@ export const AddRecordToDB = async (tableName: string, record: any) => {
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS ${tableName} (id INTEGER PRIMARY KEY NOT NULL, record TEXT NULL);
       `);
+
       await database.runAsync(
-        `INSERT INTO ${tableName} (record) VALUES (?)`,
+        `INSERT INTO ${tableName} (record) VALUES (?);`,
         recordString
       );
+
       return true;
     }
   } catch (error) {

@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyledImage,
   StyledText,
@@ -8,12 +8,13 @@ import {
 } from "@/components/StyledComponents";
 import { AppContext } from "@/context";
 import { PLACEHOLDER_IMG } from "@/constants/fixtures";
-import { deleteTable } from "@/services/database/helpers";
+import { deleteTable, findLocalUser } from "@/services/database/helpers";
 import { signOutUser } from "@/services/firebase/authentication";
 import { useRouter } from "expo-router";
 
 const account = () => {
   const router = useRouter();
+  const [user, setUser] = useState({ firstName: "", lastName: "" });
   const { contextState, updateContextState, resetContext } =
     useContext<any>(AppContext);
   const handleLogout = async () => {
@@ -25,6 +26,13 @@ const account = () => {
     }
     router.replace({ pathname: "/", params: { hasLoggedOut: "true" } });
   };
+
+  useEffect(() => {
+    (async () => {
+      const result = await findLocalUser();
+      setUser(result);
+    })();
+  }, []);
 
   return (
     <StyledView className="p-4 space-y-5">
@@ -47,7 +55,7 @@ const account = () => {
           />
         </StyledView>
         <StyledText className="text-xl font-poppinsBold text-textDarkColor py-2.5">
-          {`${contextState.application.applicant?.firstName} ${contextState.application.applicant?.lastName}`}
+          {`${user.firstName} ${user.lastName}`}
         </StyledText>
       </StyledView>
       <StyledView className="w-full flex flex-row justify-between gap-2 items-start py-3.5 px-6">
