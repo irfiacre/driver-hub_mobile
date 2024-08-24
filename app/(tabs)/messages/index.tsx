@@ -28,7 +28,7 @@ const message = () => {
     <StyledView className="bg-white h-full">
       <StatusBar backgroundColor="white" barStyle={"dark-content"} />
       <StyledText className="mx-4 text-textDarkColor text-xl font-poppinsBold p-4">
-        Chats
+        Chat
       </StyledText>
       {staffUsers.map((elt: any) => (
         <StyledTouchableOpacity
