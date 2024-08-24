@@ -2,7 +2,7 @@
 
 This is a recruitment system that provides drivers with a user-friendly mobile app that allows them to submit applications, take onboarding courses, submit feedback, and track the status of application and onboarding plan.
 
-### Features:
+### Features
 
 1. Authentication.
 2. Application Submission.
